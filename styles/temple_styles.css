@@ -1,0 +1,12 @@
+.annotation{
+	opacity: 1 !important;
+}
+.annotation-titlebar{
+	opacity: 0.5;
+}
+.annotation-description{
+	border-radius: 10px;
+	text-align: center;
+	width: auto;
+}
+
