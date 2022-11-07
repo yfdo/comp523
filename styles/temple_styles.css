@@ -9,4 +9,8 @@
 	text-align: center;
 	width: auto;
 }
-
+#video-annotation-icon{
+    height: 30px;
+    margin: auto;
+    padding: 5px 0px;
+}
