@@ -53,6 +53,7 @@
 		viewer.loadSettingsFromURL();
 		viewer.setBackground("skybox");
 		viewer.setDescription("");
+		const annoVisibleDistance = 10;
 
 		viewer.loadGUI(() => {
 			viewer.setLanguage('en');
@@ -79,17 +80,6 @@
 			);
 			// viewer.scene.view.position.set(331474.338, 3066783.461, 1383.500);
 			// viewer.scene.view.lookAt(331466.170, 3066790.464, 1383.757);
-
-			viewer.addEventListener("update", () => {
-				scene.view.position.z = 1383.5;
-				// change height based on landscape?
-
-				// gets target point
-				// console.log(scene.view.getPivot());
-
-				// fix camera orientation?
-				//scene.view.pitch = 0.1;
-			});
 
 			// add annotations
 			{
@@ -141,6 +131,30 @@
 				});
 				scene.annotations.add(audioAnnotation);
 			}
+			
+			viewer.addEventListener("update", () => {
+				scene.view.position.z = 1383.5;
+				let cameraPos=scene.view.position;
+				let annos = scene.annotations.children;
+				// check if annotations should display
+				for(let i=0;i<annos.length;i++){
+					let show = checkIfDisplay(cameraPos, annos[i].cameraPosition)
+					if(show){
+						annos[i].visible=true;
+					}
+					else{
+						annos[i].visible=false;
+					}
+				}
+				// change height based on landscape?
+
+				// gets target point
+				// console.log(scene.view.getPivot());
+
+				// fix camera orientation
+				//scene.view.pitch = 0.1;
+			});
+			
 			//viewer.fitToScreen();
 			//to delete
 			/*
@@ -203,6 +217,13 @@
 			//}
 			
 		});
+
+
+		function checkIfDisplay(cameraPos, annoPos){
+			let distance = Math.sqrt((cameraPos.x-annoPos.x)**2+(cameraPos.y-annoPos.y)**2+(cameraPos.z-annoPos.z)**2)
+			if(distance>=annoVisibleDistance) return false;
+			return true;
+		}
 	</script>
 
 
